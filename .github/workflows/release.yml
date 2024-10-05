@@ -1,0 +1,160 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: string
+        description: |
+          Branch name to release.
+        required: true
+        default: main
+      section:
+        type: choice
+        description: |
+          Semver section to increment.
+        options:
+          - PATCH
+          - MINOR
+          - MAJOR
+          - RERUN
+          - MANUAL
+        required: true
+        default: PATCH
+      snapshot:
+        type: boolean
+        description: |
+          Enables snapshot version
+        required: true
+        default: false
+      version:
+        type: string
+        description: |
+          Manually setup version (like: 1.2.3). Overrides previous version related settings.
+        required: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          branch: ${{ inputs.branch }}
+          token: ${{ secrets.CI_TOKEN }}
+
+      - name: Validate build succeeded
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          declare -r SHA="$(git rev-parse --short HEAD)"
+          declare -r BUILD_SUCCESS="$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/runs?status=success\&head_sha=$SHA \
+            | jq 'limit(1; .workflow_runs[] | select(.name == "Build" and .conclusion == "success"))')"
+          if [ -z "$BUILD_SUCCESS" ]; then
+            echo "Commit did not pass Build!"
+            exit 1
+          fi
+
+      - name: Get versions
+        id: versions
+        env:
+          MANUAL_VERSION: ${{ inputs.version }}
+          INCREMENT_SECTION: ${{ inputs.section }}
+        run: |
+          declare -r GIT_VERSION="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1 | cut -c2-)"
+          declare -r VERSION=${GIT_VERSION:-0.0.0}
+          declare -r MAJOR="$(echo "$VERSION" | cut -d. -f1)"
+          declare -r MINOR="$(echo "$VERSION" | cut -d. -f2)"
+          declare -r PATCH="$(echo "$VERSION" | cut -d. -f3)"
+          declare NEXT_VERSION=""
+          if [ "$INCREMENT_SECTION" == "MANUAL" ]; then
+            if [ "$MANUAL_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]; then
+              NEXT_VERSION="$MANUAL_VERSION"
+            else
+              echo "Invalid manual version: $MANUAL_VERSION" >&2
+              return 1
+            fi
+          elif [ "$INCREMENT_SECTION" == "PATCH" ]; then
+            NEXT_VERSION="$MAJOR.$MINOR.$(( PATCH + 1 ))"
+          elif [ "$INCREMENT_SECTION" == "MINOR" ]; then
+            NEXT_VERSION="$MAJOR.$(( MINOR + 1 )).0"
+          elif [ "$INCREMENT_SECTION" == "MAJOR" ]; then
+            NEXT_VERSION="$(( MAJOR + 1 )).0.0"
+          elif [ "$INCREMENT_SECTION" == "RERUN" ]; then
+            NEXT_VERSION="$VERSION"
+            git tag -d "v$NEXT_VERSION" || echo "Local tag does not exist: v$NEXT_VERSION"
+            git push --delete origin "v$NEXT_VERSION" || echo "Remote tag does not exist: v$NEXT_VERSION"
+          else
+            echo "Unrecognized option: $INCREMENT_SECTION" >&2
+            return 1
+          fi
+          echo "next_version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo -e "VERSION: $VERSION\nNEXT_VERSION: $NEXT_VERSION"
+
+      - name: Update version in files
+        if: steps.gpg.conclusion == 'success'
+        env:
+          PREV_VERSION: ${{ steps.versions.outputs.version }}
+          NEXT_VERSION: ${{ steps.versions.outputs.next_version }}
+        run: |
+          declare -r ESC_PREV_VERSION="${PREV_VERSION//./\\.}"
+          echo "Changing: $PREV_VERSION -> $NEXT_VERSION"
+          sed -i "s|${ESC_PREV_VERSION}|${NEXT_VERSION}|" README.md
+          sed -i "s|^version=${ESC_PREV_VERSION}|version=${NEXT_VERSION}|" gradle.properties
+          if [ "$NEXT_VERSION" == "${NEXT_VERSION%%-SNAPSHOT}" ]; then
+            if [ -n "$(git status --porcelain)" ]; then
+              git add -A
+              git commit -a -m "Update version $PREV_VERSION -> $NEXT_VERSION" -m "[ci skip]"
+              git push origin master
+            else
+              echo "Nothing changed. Skipping commit."
+            fi
+          else
+            echo "Skipping committing updated version in config files for SNAPSHOT version."
+          fi
+
+      - name: Create Release Tag
+        env:
+          NEXT_VERSION: ${{ steps.versions.outputs.next_version }}
+        run: |
+          git tag "v$NEXT_VERSION"
+          git push origin "v$NEXT_VERSION"
+
+      - name: Publish Release to Maven Central
+        if: in
+        run: |
+          echo "Simulating publish to maven central..."
+
+      - name: Generate release notes
+        id: notes
+        if: |
+          github.event_name != 'release'
+          && github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PREV_VERSION: ${{ steps.versions.outputs.version }}
+          NEXT_VERSION: ${{ steps.versions.outputs.next_version }}
+        run: |
+          declare -r NOTES="$(gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/releases/generate-notes \
+            -f tag_name="v$NEXT_VERSION" \
+            -f target_commitish='master' \
+            -f previous_tag_name="v$PREV_VERSION" \
+            | jq -r '.body')"
+          declare -r ESCAPED="${NOTES//$'\n'/'%0A'}"
+          echo ::set-output name=notes::$ESCAPED
+
+      - name: Create github release (master only)
+        if: steps.notes.conclusion == 'success'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          body: ${{ steps.notes.outputs.notes }}
+          draft: ${{ inputs.publish == 'SKIP' }}
+          tag: v${{ steps.versions.outputs.next_version }}
+          token: ${{ secrets.GITHUB_TOKEN }}

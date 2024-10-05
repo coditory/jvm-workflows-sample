@@ -1,0 +1,23 @@
+# Gradle
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+/build
+/build-logic/build
+
+# Docker
+scripts/docker/**/data
+scripts/docker/**/data+bak
+
+# Config files with secrets
+src/main/resources/config/*-secret.yml
+
+# Frontend
+src/main/resources/assets
+src/main/resources/assets-dev
+
+# IntelliJ
+out
+*.iml
+.idea/*
+!.idea/codeStyles
+
