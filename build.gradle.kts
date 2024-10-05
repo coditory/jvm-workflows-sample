@@ -16,7 +16,7 @@ dependencies {
         val coroutines = "1.8.1"
         val kotest = "5.9.1"
     }
-    implementation("com.coditory.klog:klog:0.0.16")
+    implementation("com.coditory.klog:klog:0.0.17")
 
     // unit tests
     testImplementation("io.kotest:kotest-runner-junit5:${versions.kotest}")
