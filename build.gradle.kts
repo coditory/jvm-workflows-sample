@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover") version "0.8.3"
 }
 
-group = "com.github.ogesaku"
+group = "com.coditory.sample"
 
 repositories {
     mavenCentral()
@@ -37,4 +37,8 @@ kotlin {
     compilerOptions {
         allWarningsAsErrors = true
     }
+}
+
+tasks.register("coverage") {
+    dependsOn("koverXmlReport", "koverHtmlReport", "koverLog")
 }
