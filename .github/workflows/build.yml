@@ -86,7 +86,8 @@ jobs:
         # Publishing to maven central sometimes fails
         continue-on-error: true
         env:
-          VERSION_SUFFIX: ${{ (github.event.repository != null && github.ref_name == github.event.repository.default_branch) && 'NULL' || github.ref_name }}
+          PR_NUMBER: ${{ (github.event_name == 'pull_request') && github.event.number || 0 }}
+          REF_NAME: ${{ (github.event.repository != null && github.ref_name == github.event.repository.default_branch) && 'NULL' || github.ref_name }}
         run: |
           declare -r GIT_VERSION="$(git tag -l 'v[0-9]*' --merged HEAD --sort=-v:refname | grep -E "^v[0-9]+.[0-9]+.[0-9]+$" | head -n 1 | cut -c2-)"
           declare -r VERSION=${GIT_VERSION:-0.0.0}
@@ -94,10 +95,14 @@ jobs:
           declare -r MINOR="$(echo "$VERSION" | cut -d. -f2)"
           declare -r PATCH="$(echo "$VERSION" | cut -d. -f3)"
           declare NEXT_VERSION="$MAJOR.$MINOR.$(( PATCH + 1 ))"
-          if [ "$VERSION_SUFFIX" == "NULL" ] || [[ "$VERSION_SUFFIX" =~ ^v[0-9]+\.x\.x$ ]]; then
-            NEXT_VERSION="${NEXT_VERSION}-SNAPSHOT"
+          if [ "$PR_NUMBER" != 0 ]; then
+            NEXT_VERSION="${NEXT_VERSION}-pr-${PR_NUMBER}-SNAPSHOT"
+          elif [ "$VERSION_SUFFIX" != "NULL" ] && ! [[ "$VERSION_SUFFIX" =~ ^v[0-9]+\.x\.x$ ]]; then
+            declare SUFFIX="$(echo "$VERSION_SUFFIX" | sed -e 's|[^a-zA-Z0-9]|-|' -e 's|-\+|-|' | tr '[:upper:]' '[:lower:]')"
+            SUFFIX="${SUFFIX:0:30}"
+            NEXT_VERSION="${NEXT_VERSION}-${SUFFIX}-SNAPSHOT"
           else
-            NEXT_VERSION="${NEXT_VERSION}-${VERSION_SUFFIX}-SNAPSHOT"
+            NEXT_VERSION="${NEXT_VERSION}-SNAPSHOT"
           fi
           echo "Simulating snapshot publish to maven central with version: $NEXT_VERSION"
           echo "### Published Snapshot version $NEXT_VERSION 🚀" >> $GITHUB_STEP_SUMMARY
