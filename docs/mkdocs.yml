@@ -1,0 +1,118 @@
+site_name: GitHub Actions Release Sample
+site_description: An example on hot to use GitHub action for release process
+site_author: coditory
+site_url: https://coditory.github.io/actions-release-sample
+site_dir: build
+docs_dir: src
+
+repo_name: coditory/actions-release-sample
+repo_url: https://github.com/coditory/actions-release-sample
+
+theme:
+  name: material
+  custom_dir: theme
+  logo: assets/img/icon.png
+  static_templates:
+    - 404.html
+  # Don't include MkDocs' JavaScript
+  include_search_page: false
+  search_index_only: true
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  features:
+    - content.code.select
+    - content.code.copy
+    - instant
+    - navigation.instant
+    - navigation.indexes
+    - navigation.sections
+    - navigation.expand
+    - content.tabs.link
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/img/favicon.png
+
+plugins:
+  - search
+  - markdownextradata: { }
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: !relative $config_dir/..
+  - pymdownx.superfences
+
+extra:
+  version: 3.0.0
+  vcs_baseurl: https://github.com/coditory/actions-release-sample/blob/master
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://coditory.com
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/coditory/actions-release-sample
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/coditory
+  analytics:
+    provider: google
+    property: !!python/object/apply:os.getenv ["GOOGLE_ANALYTICS_ID"]
+
+# Site navigation
+nav:
+  - Home: index.md
+  - About: about.md

@@ -1,0 +1,3 @@
+- [GitHub Repository](https://github.com/coditory/actions-release-sample/)
+- [License](https://github.com/coditory/actions-release-sample/blob/master/LICENSE)
+- [Changelog](https://github.com/coditory/actions-release-sample/releases)

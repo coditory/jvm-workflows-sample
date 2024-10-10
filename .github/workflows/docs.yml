@@ -1,0 +1,42 @@
+name: Docs
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "docs/src/**"
+      - "docs/mkdocs.yml"
+      - "docs/mkdocs-requirements.txt"
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+
+      - name: Import gpg key
+        id: gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        if: inputs.snapshot == false
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_committer_name: Coditory Bot
+          git_committer_email: bot@coditory.com
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install mkdocs
+        run: cd docs && pip install -r requirements.txt
+
+      - name: Deploy docs
+        run: cd docs && mkdocs gh-deploy --force

@@ -2,15 +2,13 @@
 
 ## Pre commit hook (optional)
 
-Install git pre-commit hook:
+Installing pre-commit hook is optional but can save you some headache when pushing unformatted code.
+
+Installing git pre-commit hook that formats code with [Ktlint](https://pinterest.github.io/ktlint):
 
 ```sh
 cp scripts/git/pre-commit .git/hooks/pre-commit
 ```
-
-Pre-commit hook just formats code with [Ktlint](https://pinterest.github.io/ktlint).
-
-Installing pre-commit hook is optional.
 
 ## Commit messages
 
@@ -58,5 +56,6 @@ The snapshot version can be found in GitHub Action build log.
 
 ## Documentation
 
-If change adds new feature or modifies a new one
-update [readme](/README.md) and [documentation](/docs).
+If change adds new feature or modifies an existing one update [README](/README.md) and [documentation](/docs).
+
+To locally preview documentation changes follow instructions in [docs/README.md](/docs)
