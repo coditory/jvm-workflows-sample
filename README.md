@@ -6,4 +6,4 @@
 
 > An example of a GitHub action workflow that builds the project, publishes docs and creates releases.
 
-[documentation](https://coditory.github.io/actions-release-sample/) · [development](/DEVELOPMENT.md)
+[Documentation](https://coditory.github.io/actions-release-sample/) · [Development](/DEVELOPMENT.md)
