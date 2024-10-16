@@ -27,7 +27,7 @@ jobs:
           # Required to deduce version from git tags
           fetch-depth: 0
 
-      - name: Validate build succeeded
+      - name: Skip build if not needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -35,7 +35,7 @@ jobs:
           declare -r RUNS="$(gh api \
             -H "Accept: application/vnd.github+json" \
             /repos/${{ github.repository }}/actions/runs?head_sha=$SHA)"
-          declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r 'limit(1; .workflow_runs[] | select(.name == "Build" and (.conclusion == "success" || .conclusion == "skipped"))) | .conclusion')"
+          declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r 'limit(1; .workflow_runs[] | select(.name == "Build" and (.conclusion == "success" or .conclusion == "skipped"))) | .conclusion')"
           if [ -z "$BUILD_SUCCESS"  ]; then
             echo "Last commit did not pass Build"
             echo "skip=false" >> $GITHUB_OUTPUT
