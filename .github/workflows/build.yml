@@ -57,8 +57,7 @@ jobs:
           esac
           echo -e "Changed files:\n$CHANGED_FILES"
           NOT_SKIPPED="$(echo "$CHANGED_FILES" \
-            | grep -v -e "^[^/]*\.md" -e "^.github/.*\.md" -e "^.gitignore" -e "^docs/.*" -e "^gradle.properties" \
-            || echo "")"
+            | grep -v -e "^[^/]*\.md" -e "^.github/.*\.md" -e "^.gitignore" -e "^docs/.*" -e "^gradle.properties" || true)"
           echo -e "\nNot skipped files:\n$NOT_SKIPPED"
           if [ -z "$NOT_SKIPPED" ]; then
             echo "skip=true" >> $GITHUB_OUTPUT
