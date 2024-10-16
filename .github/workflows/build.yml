@@ -28,6 +28,7 @@ jobs:
           fetch-depth: 0
 
       - name: Skip build if not needed
+        id: skipper
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -58,11 +59,11 @@ jobs:
           echo -e "Changed files:\n$CHANGED_FILES"
           NOT_SKIPPED="$(echo "$CHANGED_FILES" \
             | grep -v -e "^[^/]*\.md" -e "^.github/.*\.md" -e "^.gitignore" -e "^docs/.*" -e "^gradle.properties" || true)"
-          echo -e "\nNot skipped files:\n$NOT_SKIPPED"
           if [ -z "$NOT_SKIPPED" ]; then
-            echo "Previous commit pass build and current commit has no important files. Skipping build. >>$NOT_SKIPPED<<"
+            echo "Previous commit passed Build and current commit has no important files. Skipping Build."
             echo "skip=true" >> $GITHUB_OUTPUT
           else
+            echo -e "Previous commit passed Build but current commit has important files:\n$(echo $NOT_SKIPPED | head -n 10)"
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
 
