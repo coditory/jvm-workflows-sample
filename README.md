@@ -4,6 +4,6 @@
 [![Build](https://github.com/coditory/actions-release-sample/actions/workflows/build.yml/badge.svg)](https://github.com/coditory/actions-release-sample/actions/workflows/build.yml)
 [![Coverage](https://codecov.io/gh/coditory/actions-release-sample/branch/main/graph/badge.svg?token=TCVSZBEovQ)](https://codecov.io/gh/coditory/actions-release-sample)
 
-> A full-blown example on how to use GitHub actions to release a project.
+> An example of a GitHub action workflow that builds the project, publishes docs and creates releases.
 
 [Documentation](https://coditory.github.io/actions-release-sample/) · [Development](/DEVELOPMENT.md)
