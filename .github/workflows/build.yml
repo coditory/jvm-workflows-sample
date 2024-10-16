@@ -31,10 +31,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          declare -r SHA="$(git rev-parse HEAD)"
+          declare -r PREV_SHA="$(git rev-parse HEAD~1 2>/dev/null || true)"
+          if [ "$PREV_SHA" == "HEAD~1" ]; then
+            echo "It's an initial commit."
+            echo "skip=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           declare -r RUNS="$(gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/actions/runs?head_sha=$SHA)"
+            /repos/${{ github.repository }}/actions/runs?head_sha=$PREV_SHA)"
           declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r 'limit(1; .workflow_runs[] | select(.name == "Build" and (.conclusion == "success" or .conclusion == "skipped"))) | .conclusion')"
           if [ -z "$BUILD_SUCCESS"  ]; then
             echo "Last commit did not pass Build"
@@ -43,7 +48,7 @@ jobs:
           fi
           case '${{ github.event_name }}' in
             push)
-              SHAS=(${{ join(github.event.commits.*.id, ' ') }})
+              SHAS=(${{ join(github.event.commits.*.id, ' ') || 'none' }})
               FIRST_COMMIT="${SHAS[0]}"
               LAST_COMMIT="${SHAS[-1]}"
               ;;
