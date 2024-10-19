@@ -32,6 +32,13 @@ jobs:
         uses: coditory/action-skipper@main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          skipFiles: |-
+            ^.gitignore
+            ^[^/]*\.md
+            ^.github/.*\.md
+            ^docs/.*
+            ^gradle.properties
 
       - name: Setup JDK
         uses: actions/setup-java@v4
