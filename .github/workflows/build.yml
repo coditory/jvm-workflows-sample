@@ -85,7 +85,6 @@ jobs:
           steps.skipper.outputs.skip != 'true'
           && github.event_name == 'push'
           && (github.ref_name == github.event.repository.default_branch || (startsWith(github.ref_name, 'v') && endsWith(github.ref_name, '.x.x')))
-          && env.GPG_PRIVATE_KEY != ''
         uses: coditory/version-action@v1
         with:
           snapshot: true
