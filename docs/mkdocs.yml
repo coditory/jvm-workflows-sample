@@ -99,7 +99,7 @@ markdown_extensions:
   - pymdownx.superfences
 
 extra:
-  version: 3.0.8
+  version: 3.0.9
   vcs_baseurl: https://github.com/coditory/actions-release-sample/blob/master
   social:
     - icon: fontawesome/solid/globe
