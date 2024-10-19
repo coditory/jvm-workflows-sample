@@ -75,8 +75,8 @@ jobs:
           declare -r SHA="$(git rev-parse HEAD)"
           declare -r RUNS="$(gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/actions/runs?head_sha=$SHA)"
-          declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r 'limit(1; .workflow_runs[] | select(.name == "Build" and .conclusion == "success")) | .conclusion')"
+            /repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$SHA)"
+          declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r "limit(1; .workflow_runs[] | select(.name == \"$GITHUB_WORKFLOW\" and .conclusion == \"success\")) | .conclusion")"
           if [ -z "$BUILD_SUCCESS"  ]; then
             echo "Commit did not pass Build. Stopping release!"
             exit 1
@@ -192,7 +192,7 @@ jobs:
           declare -r NOTES="$(gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/releases/generate-notes \
+            /repos/$GITHUB_REPOSITORY/releases/generate-notes \
             -f tag_name="v$NEXT_VERSION" \
             -f previous_tag_name="$PREV_TAG_NAME" \
             | jq -r '.body')"
