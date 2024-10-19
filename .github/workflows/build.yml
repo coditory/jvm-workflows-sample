@@ -29,11 +29,11 @@ jobs:
 
       - name: Skip build if not needed
         id: skipper
-        uses: coditory/action-skipper@main
+        uses: coditory/action-skipper@v1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          skipFiles: |-
+          skip-files: |-
             ^.gitignore
             ^[^/]*\.md
             ^.github/.*\.md
