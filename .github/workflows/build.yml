@@ -39,6 +39,7 @@ jobs:
             ^.github/.*\.md
             ^docs/.*
             ^gradle.properties
+            ^xxx
 
       - name: Setup JDK
         uses: actions/setup-java@v4
