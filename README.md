@@ -6,4 +6,4 @@
 
 > A full-blown example on how to use GitHub actions to release a project.
 
-[documentation](https://coditory.github.io/actions-release-sample/) · [development](/DEVELOPMENT.md)
+[Documentation](https://coditory.github.io/actions-release-sample/) · [development](/DEVELOPMENT.md)
