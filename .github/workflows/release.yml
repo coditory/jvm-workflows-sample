@@ -67,6 +67,7 @@ jobs:
       - name: Validate build succeeded
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_WORKFLOW: Build
         run: |
           if git tag --points-at HEAD | grep -Eq "^v[0-9]+.[0-9]+.[0-9]+$"; then
             echo "Last commit is a release commit."
@@ -76,12 +77,12 @@ jobs:
           declare -r RUNS="$(gh api \
             -H "Accept: application/vnd.github+json" \
             /repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$SHA)"
-          declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r "limit(1; .workflow_runs[] | select(.name == \"$GITHUB_WORKFLOW\" and .conclusion == \"success\")) | .conclusion")"
+          declare -r BUILD_SUCCESS="$(echo "$RUNS" | jq -r "limit(1; .workflow_runs[] | select(.name == \"$BUILD_WORKFLOW\" and .conclusion == \"success\")) | .conclusion")"
           if [ -z "$BUILD_SUCCESS"  ]; then
-            echo "Commit did not pass Build. Stopping release!"
+            echo "Commit did not pass $BUILD_WORKFLOW. Stopping release!"
             exit 1
           fi
-          echo "Last commit passed Build."
+          echo "Last commit passed $BUILD_WORKFLOW."
           exit 0
 
       - name: Version
