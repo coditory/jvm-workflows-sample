@@ -12,4 +12,5 @@ on:
 jobs:
   docs:
     uses: coditory/workflows/.github/workflows/docs.yml@v1
+    secrets: inherit
 
