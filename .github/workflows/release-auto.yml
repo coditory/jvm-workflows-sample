@@ -8,53 +8,12 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
-    outputs:
-      release: ${{ steps.check.outputs.release }}
-    steps:
-      # Just for debug
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # Required to deduce version from git tags
-          fetch-depth: 0
-
-      - name: Version
-        id: version
-        uses: coditory/version-action@v1
-        with:
-          snapshot: ${{ inputs.snapshot }}
-          manual-version: ${{ inputs.version }}
-          increment-section: ${{ inputs.section }}
-
-      - name: Check commits
-        id: check
-        env:
-          LAST_VERSION_TAG: "v${{ steps.version.outputs.version }}"
-          DEPENDABOT_AUTHOR: ""
-        run: |
-          declare -r AUTHORS="$(git log $LAST_VERSION_TAG..HEAD --no-merges --oneline --format='%ae' 2>/dev/null | sort -u)"
-          # if [[ "$AUTHORS" != *dependabot[bot]@users.noreply.github.com ]]; then
-          if [[ "$AUTHORS" != *ogesaku@gmail.com ]]; then
-            echo "Skipping auto-release. Since last release $LAST_RELEASE_TAG there were changes commited not by dependabot."
-            echo ""
-            echo "Authors:"
-            echo "$AUTHORS"
-            echo ""
-            echo "release=false" | tee -a $GITHUB_OUTPUT
-          else
-            echo "Triggering release. Since last release $LAST_RELEASE_TAG there were commits authored by dependabot only."
-            echo ""
-            echo "release=true" | tee -a $GITHUB_OUTPUT
-          fi
+    uses: coditory/workflows/.github/workflows/release-auto-check.yml@v1
+    secrets: inherit
 
   auto-release:
-    needs: check
-    if: needs.check.outputs.release == 'true'
-    secrets: inherit
     uses: ./.github/workflows/release.yml
+    secrets: inherit
+    if: needs.check.outputs.release == 'true'
+    needs: check
+
