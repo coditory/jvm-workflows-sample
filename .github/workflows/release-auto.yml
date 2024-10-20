@@ -48,6 +48,6 @@ jobs:
           echo "Triggering release. Since last release $LAST_RELEASE_TAG there were commits authored by dependabot only."
 
   auto-release:
-    needs: auto-release-check
+    needs: check
     if: needs.check.outputs.release == 'true'
     uses: ./.github/workflows/release.yml
