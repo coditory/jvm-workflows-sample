@@ -1,0 +1,53 @@
+name: Release Auto
+
+on:
+  workflow_dispatch:
+  schedule:
+    # at 5:30 UTC every other month
+    - cron: "30 5 1 */2 *"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{ steps.check.outputs.release }}
+    steps:
+      # Just for debug
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Required to deduce version from git tags
+          fetch-depth: 0
+
+      - name: Version
+        id: version
+        uses: coditory/version-action@v1
+        with:
+          snapshot: ${{ inputs.snapshot }}
+          manual-version: ${{ inputs.version }}
+          increment-section: ${{ inputs.section }}
+
+      - name: Check commits
+        if: check
+        env:
+          LAST_VERSION_TAG: "v${{ steps.version.outputs.version }}"
+          DEPENDABOT_AUTHOR: ""
+        run: |
+          declare -r AUTHORS="$(git log $LAST_VERSION_TAG..HEAD --no-merges --oneline --format='%ae' 2>/dev/null | sort -u)"
+          if [[ "$AUTHORS" != *dependabot[bot]@users.noreply.github.com ]]; then
+            echo "Skipping auto-release. Since last release $LAST_RELEASE_TAG there were commits having multiple authors."
+            echo "Authors:"
+            echo "$AUTHORS"
+            exit 1
+          fi
+          echo "Triggering release. Since last release $LAST_RELEASE_TAG there were commits authored by dependabot only."
+
+  auto-release:
+    needs: auto-release-check
+    if: needs.check.outputs.release == 'true'
+    uses: ./.github/workflows/release.yml@main
