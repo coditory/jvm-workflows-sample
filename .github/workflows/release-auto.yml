@@ -39,7 +39,8 @@ jobs:
           DEPENDABOT_AUTHOR: ""
         run: |
           declare -r AUTHORS="$(git log $LAST_VERSION_TAG..HEAD --no-merges --oneline --format='%ae' 2>/dev/null | sort -u)"
-          if [[ "$AUTHORS" != *dependabot[bot]@users.noreply.github.com ]]; then
+          # if [[ "$AUTHORS" != *dependabot[bot]@users.noreply.github.com ]]; then
+          if [[ "$AUTHORS" != *ogesaku@gmail.com ]]; then
             echo "Skipping auto-release. Since last release $LAST_RELEASE_TAG there were changes commited not by dependabot."
             echo ""
             echo "Authors:"
