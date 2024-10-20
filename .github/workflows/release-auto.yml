@@ -33,7 +33,7 @@ jobs:
           increment-section: ${{ inputs.section }}
 
       - name: Check commits
-        if: check
+        id: check
         env:
           LAST_VERSION_TAG: "v${{ steps.version.outputs.version }}"
           DEPENDABOT_AUTHOR: ""
