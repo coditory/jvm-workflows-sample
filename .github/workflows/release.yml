@@ -2,6 +2,18 @@ name: Release
 
 on:
   workflow_call:
+    inputs:
+      branch:
+        type: string
+        required: true
+        default: 'main'
+      section:
+        type: string
+        required: true
+        default: 'patch'
+      version:
+        type: string
+        required: false
   workflow_dispatch:
     inputs:
       branch:
@@ -60,7 +72,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: "refs/heads/${{ inputs.branch || github.event.repository.default_branch }}"
+          ref: "refs/heads/${{ inputs.branch }}"
           token: ${{ steps.bot.outputs.token }}
           # Required to deduce version from git tags
           fetch-depth: 0
@@ -161,7 +173,7 @@ jobs:
         id: tag
         if: inputs.snapshot == false
         env:
-          BRANCH: ${{ inputs.branch || github.event.repository.default_branch }}
+          BRANCH: ${{ inputs.branch }}
           NEXT_VERSION: ${{ steps.version.outputs.next_version }}
           PREV_VERSION: ${{ steps.version.outputs.version }}
         run: |
