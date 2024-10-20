@@ -19,8 +19,7 @@ on:
         default: patch
       version:
         type: string
-        description: |
-          ...or manually define version like 1.2.3, 1.2.3-suffix
+        description: ...or manually define version like 1.2.3, 1.2.3-suffix
         required: false
       snapshot:
         type: boolean
