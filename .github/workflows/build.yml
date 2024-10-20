@@ -12,3 +12,6 @@ jobs:
   build:
     uses: coditory/jvm-workflows/.github/workflows/build.yml@v1
     secrets: inherit
+    with:
+      snapshot: true
+      snapshot-command: echo "Simulating snapshot publication %NEXT_VERSION%"

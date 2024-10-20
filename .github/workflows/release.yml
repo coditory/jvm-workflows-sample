@@ -53,4 +53,7 @@ jobs:
       branch: ${{ inputs.branch }}
       section: ${{ inputs.section }}
       version: ${{ inputs.version }}
+      release-command: echo "Simulating release publication - %NEXT_VERSION%"
       snapshot: ${{ inputs.snapshot }}
+      snapshot-command: echo "Simulating snapshot publication - %NEXT_VERSION%"
+
