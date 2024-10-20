@@ -50,4 +50,4 @@ jobs:
   auto-release:
     needs: auto-release-check
     if: needs.check.outputs.release == 'true'
-    uses: ./.github/workflows/release.yml@main
+    uses: ./.github/workflows/release.yml
