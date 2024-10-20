@@ -41,15 +41,16 @@ jobs:
           declare -r AUTHORS="$(git log $LAST_VERSION_TAG..HEAD --no-merges --oneline --format='%ae' 2>/dev/null | sort -u)"
           if [[ "$AUTHORS" != *dependabot[bot]@users.noreply.github.com ]]; then
             echo "Skipping auto-release. Since last release $LAST_RELEASE_TAG there were changes commited not by dependabot."
+            echo ""
             echo "Authors:"
             echo "$AUTHORS"
             echo ""
             echo "release=false" | tee -a $GITHUB_OUTPUT
-            exit 1
+          else
+            echo "Triggering release. Since last release $LAST_RELEASE_TAG there were commits authored by dependabot only."
+            echo ""
+            echo "release=true" | tee -a $GITHUB_OUTPUT
           fi
-          echo "Triggering release. Since last release $LAST_RELEASE_TAG there were commits authored by dependabot only."
-          echo ""
-          echo "release=true" | tee -a $GITHUB_OUTPUT
 
   auto-release:
     needs: check
