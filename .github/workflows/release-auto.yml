@@ -56,4 +56,5 @@ jobs:
   auto-release:
     needs: check
     if: needs.check.outputs.release == 'true'
+    secrets: inherit
     uses: ./.github/workflows/release.yml
