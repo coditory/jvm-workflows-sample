@@ -7,3 +7,8 @@
 A sample project using [Coditory JVM Workflows](https://github.com/coditory/jvm-workflows).
 
 [documentation](https://coditory.github.io/actions-release-sample/) · [development](/DEVELOPMENT.md)
+
+See:
+- [Other Coditory workflows](https://github.com/topics/coditory-workflows)
+- [Coditory actions](https://github.com/topics/coditory-actions)
+
