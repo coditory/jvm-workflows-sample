@@ -13,5 +13,7 @@ jobs:
     uses: coditory/jvm-workflows/.github/workflows/build.yml@v1
     secrets: inherit
     with:
-      snapshot: true
+      java-version: 21
+      build-command: ./gradlew build coverage
       snapshot-command: echo "Simulating snapshot publication %NEXT_VERSION%"
+      # snapshot-command: ./gradlew publishToSonatype -Pversion=%NEXT_VERSION%

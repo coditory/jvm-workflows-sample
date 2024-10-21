@@ -47,13 +47,15 @@ on:
 
 jobs:
   release:
-    uses: coditory/jvm-workflows/.github/workflows/release.yml@v1
+    uses: coditory/workflows/.github/workflows/release.yml@v1
     secrets: inherit
     with:
       branch: ${{ inputs.branch }}
       section: ${{ inputs.section }}
       version: ${{ inputs.version }}
-      release-command: echo "Simulating release publication %NEXT_VERSION%"
       snapshot: ${{ inputs.snapshot }}
+      release-command: echo "Simulating release publication %NEXT_VERSION%"
+      # release-command: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=%NEXT_VERSION%
       snapshot-command: echo "Simulating snapshot publication %NEXT_VERSION%"
+      # snapshot-command: ./gradlew publishToSonatype -Pversion=%NEXT_VERSION%
 
