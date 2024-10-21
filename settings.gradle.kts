@@ -1,4 +1,4 @@
-rootProject.name = "actions-release-sample"
+rootProject.name = "jvm-workflows-sample"
 
 plugins {
     id("com.gradle.develocity") version ("3.18.1")
