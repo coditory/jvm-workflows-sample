@@ -1,4 +1,4 @@
-name: Upgrade gradle wrapper
+name: Upgrade Gradle Wrapper
 
 on:
   workflow_dispatch:
