@@ -4,7 +4,7 @@
 # Currently App cannot be a part of a team or CODEOWNERS file.
 # https://github.com/orgs/community/discussions/23064
 .github/workflows/*
-gradle/*
+gradle/**
 build.gradke.kts
 settings.gradle.kts
 
