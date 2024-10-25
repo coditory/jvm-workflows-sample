@@ -27,7 +27,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:${versions.kotest}")
     testImplementation("io.kotest:kotest-framework-datatest:${versions.kotest}")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}")
-    testImplementation("org.skyscreamer:jsonassert:1.5.0")
+    testImplementation("org.skyscreamer:jsonassert:1.5.3")
 }
 
 ktlint {
