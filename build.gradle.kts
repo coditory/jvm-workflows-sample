@@ -15,11 +15,11 @@ repositories {
 
 dependencies {
     val coroutinesVersion = "1.8.1"
-    implementation("com.coditory.klog:klog:0.0.12")
-    implementation("com.coditory.quark:quark-context:0.1.20")
+    implementation("com.coditory.klog:klog:0.0.17")
+    implementation("com.coditory.quark:quark-context:0.1.22")
 
     // unit tests
-    val kotestVersion = "5.8.0"
+    val kotestVersion = "5.9.1"
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions-junitxml:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
