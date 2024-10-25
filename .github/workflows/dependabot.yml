@@ -6,4 +6,3 @@ jobs:
   dependabot:
     uses: coditory/workflows/.github/workflows/dependabot.yml@v1
     secrets: inherit
-
