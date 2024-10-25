@@ -19,25 +19,22 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      # merged automatically
-      dependencies-development:
-        dependency-type: "development"
-        patterns:
-          - "*test"
-          - "*assert"
-      # merged and released automatically
-      dependencies-production:
-        dependency-type: "production"
-        update-types:
-          - "patch"
-          - "minor"
       # merged and released automatically
       dependencies-security-updates:
         applies-to: security-updates
         patterns:
           - "*"
+      # merged automatically
+      dependencies-development:
+        patterns:
+          - "*test"
+          - "*assert"
+      # merged and released automatically
+      dependencies-production:
+        update-types:
+          - "patch"
+          - "minor"
       # requires human approval
       dependencies-production-major:
-        dependency-type: "production"
         update-types:
           - "major"
