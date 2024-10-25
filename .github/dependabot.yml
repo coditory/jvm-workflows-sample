@@ -1,11 +1,24 @@
 version: 2
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      dependencies-security-updates:
+        applies-to: "security-updates"
+      dependencies-development:
+        patterns:
+          - "*"
+
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+    groups:
+      dependencies-security-updates:
+        applies-to: "security-updates"
+      dependencies-development:
+        dependency-type: "development"
+      dependencies-production:
+        dependency-type: "production"
