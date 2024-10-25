@@ -18,8 +18,8 @@ dependencies {
         val coroutines = "1.8.1"
         val kotest = "5.8.0"
     }
-    implementation("com.coditory.klog:klog:0.0.12")
-    implementation("com.coditory.quark:quark-context:0.1.20")
+    implementation("com.coditory.klog:klog:0.0.17")
+    implementation("com.coditory.quark:quark-context:0.1.22")
 
     // unit tests
     testImplementation("io.kotest:kotest-runner-junit5:${versions.kotest}")
