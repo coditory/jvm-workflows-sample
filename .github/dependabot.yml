@@ -5,9 +5,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      dependencies-security-updates:
-        applies-to: "security-updates"
-      dependencies-development:
+      dependencies-github-actions:
         patterns:
           - "*"
 
@@ -16,8 +14,6 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      dependencies-security-updates:
-        applies-to: "security-updates"
       dependencies-development:
         dependency-type: "development"
       dependencies-production:
