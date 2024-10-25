@@ -5,12 +5,13 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      dependencies-github-actions:
+      # merged and released automatically
+      sec-updates:
+        applies-to: security-updates
         patterns:
           - "*"
-      # merged and released automatically
-      dependencies-security-updates:
-        applies-to: security-updates
+      # merged automatically
+      dev-dependencies:
         patterns:
           - "*"
 
@@ -20,21 +21,21 @@ updates:
       interval: "daily"
     groups:
       # merged and released automatically
-      dependencies-security-updates:
+      sec-updates:
         applies-to: security-updates
         patterns:
           - "*"
       # merged automatically
-      dependencies-development:
+      dev-dependencies:
         patterns:
           - "*test"
           - "*assert"
       # merged and released automatically
-      dependencies-production:
+      prod-dependencies:
         update-types:
           - "patch"
           - "minor"
-      # requires human approval
-      dependencies-production-major:
+      # requires human approval (higher chance to fail build)
+      prod-dependencies-major:
         update-types:
           - "major"
