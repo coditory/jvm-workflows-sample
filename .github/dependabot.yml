@@ -28,8 +28,9 @@ updates:
       # merged automatically
       dev-dependencies:
         patterns:
-          - "*test*"
-          - "*assert*"
+          - "io.kotest*"
+          - "*-test"
+          - "*assert"
       # merged and released automatically
       prod-dependencies:
         update-types:
