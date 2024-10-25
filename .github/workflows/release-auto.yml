@@ -16,4 +16,3 @@ jobs:
     secrets: inherit
     if: needs.check.outputs.release == 'true'
     needs: check
-
