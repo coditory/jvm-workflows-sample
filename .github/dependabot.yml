@@ -23,8 +23,8 @@ updates:
       dependencies-development:
         dependency-type: "development"
         patterns:
-          - "*test*"
-          - "*assert*"
+          - "*test"
+          - "*assert"
       # merged and released automatically
       dependencies-production:
         dependency-type: "production"
