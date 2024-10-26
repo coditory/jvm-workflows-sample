@@ -20,7 +20,7 @@ jobs:
     uses: coditory/workflows/.github/workflows/release-auto-check.yml@v1
     secrets: inherit
     with:
-      security-updates-only: ${{ (github.event_name == 'push' || inputs.security-updates-only) && 'true' || 'false' }}
+      security-updates-only: ${{ github.event_name == 'push' || inputs.security-updates-only }}
 
   auto-release:
     uses: ./.github/workflows/release.yml
