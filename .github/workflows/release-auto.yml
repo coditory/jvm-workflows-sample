@@ -2,6 +2,9 @@ name: Release Auto
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   schedule:
     # at 5:30 UTC every other month
     - cron: "30 5 1 */2 *"
@@ -10,6 +13,8 @@ jobs:
   check:
     uses: coditory/workflows/.github/workflows/release-auto-check.yml@v1
     secrets: inherit
+    with:
+      security-updates-only: "${{ github.event_name == 'push' && 'true' || 'false' }}"
 
   auto-release:
     uses: ./.github/workflows/release.yml
