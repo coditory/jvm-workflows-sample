@@ -15,8 +15,8 @@ repositories {
 
 dependencies {
     val coroutinesVersion = "1.9.0"
-    implementation("com.coditory.klog:klog:0.0.12")
-    implementation("com.coditory.quark:quark-context:0.1.20")
+    implementation("com.coditory.klog:klog:0.0.17")
+    implementation("com.coditory.quark:quark-context:0.1.22")
 
     // unit tests
     val kotestVersion = "5.9.1"
