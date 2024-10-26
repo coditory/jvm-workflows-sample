@@ -14,18 +14,18 @@ repositories {
 }
 
 dependencies {
-    val coroutinesVersion = "1.8.1"
+    val coroutinesVersion = "1.9.0"
     implementation("com.coditory.klog:klog:0.0.12")
     implementation("com.coditory.quark:quark-context:0.1.20")
 
     // unit tests
-    val kotestVersion = "5.8.0"
+    val kotestVersion = "5.9.1"
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-extensions-junitxml:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-framework-datatest:$kotestVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
-    testImplementation("org.skyscreamer:jsonassert:1.5.0")
+    testImplementation("org.skyscreamer:jsonassert:1.5.3")
 }
 
 ktlint {
