@@ -10,11 +10,15 @@ on:
         default: false
   # Called from build
   workflow_call:
-    inputs:
-      security-updates-only:
+    output:
+      result:
+        type: string
+        description: 'Release result'
+        value: ${{ jobs.check.outputs.release == 'true' && jobs.release.result || 'skipped' }}
+      released:
         type: boolean
-        required: false
-        default: false
+        description: 'Released'
+        value: ${{ jobs.check.outputs.release == 'true' && jobs.release.result == 'success' }}
   schedule:
     # at 5:30 UTC every other month
     - cron: "30 5 1 */2 *"
@@ -27,7 +31,7 @@ jobs:
       security-updates-only: ${{ inputs.security-updates-only }}
       debug: true
 
-  auto-release:
+  release:
     uses: ./.github/workflows/release.yml
     secrets: inherit
     if: needs.check.outputs.release == 'true'
