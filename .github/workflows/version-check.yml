@@ -10,8 +10,9 @@ on:
 
 jobs:
   version-check:
-    uses: coditory/jvm-workflows/.github/workflows/version-check.yml@v1
+    uses: coditory/workflows/.github/workflows/version-check.yml@v1
     secrets: inherit
     with:
       debug: true
       java-version: 21
+      version-command: ./gradle version --quiet
