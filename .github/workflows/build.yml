@@ -5,7 +5,6 @@ on:
   pull_request:
   push:
     branches-ignore:
-      - 'dependabot/**'
       - 'gh-pages'
 
 jobs:
