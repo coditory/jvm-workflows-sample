@@ -9,7 +9,7 @@ on:
       - v*
 
 jobs:
-  build:
+  version-check:
     uses: coditory/jvm-workflows/.github/workflows/version-check.yml@v1
     secrets: inherit
     with:
