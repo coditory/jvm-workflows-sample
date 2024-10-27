@@ -20,7 +20,7 @@ jobs:
       # snapshot-command: ./gradlew publishToSonatype -Pversion=%NEXT_VERSION%
 
   publish-snapshot:
-    uses: .github/workflows/release.yml
+    uses: ./.github/workflows/release.yml
     if: |
       needs.build.result == 'success'
       && github.event_name == 'pull_request'
@@ -29,7 +29,7 @@ jobs:
       snapshot: true
 
   publish-release:
-    uses: .github/workflows/release-auto.yml
+    uses: ./.github/workflows/release-auto.yml
     if: |
       needs.build.result == 'success'
       && github.event_name == 'push'
