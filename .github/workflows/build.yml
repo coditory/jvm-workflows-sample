@@ -24,7 +24,7 @@ jobs:
     if: |
       needs.build.result == 'success'
       && github.event_name == 'push'
-      && github.ref_name == github.event.repository.default_branch || (startsWith(github.ref_name, 'v') && endsWith(github.ref_name, '.x.x')))
+      && github.ref_name == github.event.repository.default_branch || (startsWith(github.ref_name, 'v') && endsWith(github.ref_name, '.x.x'))
     with:
       security-updates-only: true
       consider-snapshot: true
