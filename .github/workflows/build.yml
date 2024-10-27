@@ -21,6 +21,7 @@ jobs:
 
   publish-snapshot:
     uses: ./.github/workflows/release.yml
+    needs: build
     if: |
       needs.build.result == 'success'
       && github.event_name == 'pull_request'
@@ -30,6 +31,7 @@ jobs:
 
   publish-release:
     uses: ./.github/workflows/release-auto.yml
+    needs: build
     if: |
       needs.build.result == 'success'
       && github.event_name == 'push'
