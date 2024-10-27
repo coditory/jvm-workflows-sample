@@ -16,10 +16,8 @@ jobs:
       debug: true
       java-version: 21
       build-command: ./gradlew build coverage
-      snapshot-command: echo "Simulating snapshot publication $NEXT_VERSION"
-      # snapshot-command: ./gradlew publishToSonatype -Pversion=%NEXT_VERSION%
 
-  publish-snapshot:
+  snapshot:
     uses: ./.github/workflows/release.yml
     needs: build
     if: |
@@ -29,7 +27,7 @@ jobs:
     with:
       snapshot: true
 
-  publish-release:
+  release:
     uses: ./.github/workflows/release-auto.yml
     needs: build
     if: |
