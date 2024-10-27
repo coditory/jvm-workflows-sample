@@ -21,6 +21,7 @@ jobs:
     secrets: inherit
     with:
       security-updates-only: ${{ github.event_name == 'push' || inputs.security-updates-only }}
+      debug: true
 
   auto-release:
     uses: ./.github/workflows/release.yml

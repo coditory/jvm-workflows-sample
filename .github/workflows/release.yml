@@ -55,6 +55,7 @@ jobs:
       version: ${{ inputs.version }}
       snapshot: ${{ inputs.snapshot }}
       java-version: 21
+      debug: true
       release-command: echo "Simulating release publication $NEXT_VERSION"
       # release-command: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=%NEXT_VERSION%
       snapshot-command: echo "Simulating snapshot publication $NEXT_VERSION variable has $(echo "$GRADLE_PUBLISH_KEY" | wc -c) characters"
