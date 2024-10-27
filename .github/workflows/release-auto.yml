@@ -8,9 +8,13 @@ on:
         type: boolean
         required: false
         default: false
-  push:
-    branches:
-      - main
+  # Called from build
+  workflow_call:
+    inputs:
+      security-updates-only:
+        type: boolean
+        required: false
+        default: false
   schedule:
     # at 5:30 UTC every other month
     - cron: "30 5 1 */2 *"
@@ -20,7 +24,7 @@ jobs:
     uses: coditory/workflows/.github/workflows/release-auto-check.yml@v1
     secrets: inherit
     with:
-      security-updates-only: ${{ github.event_name == 'push' || inputs.security-updates-only }}
+      security-updates-only: ${{ inputs.security-updates-only }}
       debug: true
 
   auto-release:

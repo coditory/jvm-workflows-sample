@@ -22,8 +22,7 @@ jobs:
   publish-snapshot:
     uses: .github/workflows/release.yml
     if: |
-      needs.build.result == 'success' 
-      && needs.build.outputs.skipped == 'false'
+      needs.build.result == 'success'
       && github.event_name == 'pull_request'
     secrets: inherit
     with:
@@ -32,7 +31,6 @@ jobs:
   publish-release:
     uses: .github/workflows/release-auto.yml
     if: |
-      needs.build.result == 'success' 
-      && needs.build.outputs.skipped == 'false'
+      needs.build.result == 'success'
       && github.event_name == 'push'
       && github.ref_name == github.event.repository.default_branch
