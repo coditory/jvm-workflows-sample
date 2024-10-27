@@ -8,17 +8,22 @@ on:
         type: boolean
         required: false
         default: false
+      consider-snapshot:
+        description: "Consider snapshot"
+        type: boolean
+        required: false
+        default: false
   # Called from build
   workflow_call:
-    output:
-      result:
-        type: string
-        description: 'Release result'
-        value: ${{ jobs.check.outputs.release == 'true' && jobs.release.result || 'skipped' }}
-      released:
+    inputs:
+      security-updates-only:
         type: boolean
-        description: 'Released'
-        value: ${{ jobs.check.outputs.release == 'true' && jobs.release.result == 'success' }}
+        required: false
+        default: false
+      consider-snapshot:
+        type: boolean
+        required: false
+        default: false
   schedule:
     # at 5:30 UTC every other month
     - cron: "30 5 1 */2 *"
@@ -34,5 +39,17 @@ jobs:
   release:
     uses: ./.github/workflows/release.yml
     secrets: inherit
-    if: needs.check.outputs.release == 'true'
     needs: check
+    if: needs.check.outputs.release == 'true'
+
+  snapshot:
+    uses: ./.github/workflows/release.yml
+    needs: check
+    secrets: inherit
+    if: |
+      inputs.consider-snapshot
+      && needs.check.outputs.release != 'true'
+      && needs.check.outputs.skip-code != 'no-changes'
+    with:
+      snapshot: true
+
