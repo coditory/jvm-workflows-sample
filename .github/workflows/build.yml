@@ -11,7 +11,6 @@ on:
 jobs:
   build:
     uses: coditory/jvm-workflows/.github/workflows/build.yml@v1
-    secrets: inherit
     with:
       debug: true
       java-version: 21

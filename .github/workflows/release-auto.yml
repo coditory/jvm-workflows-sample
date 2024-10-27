@@ -47,4 +47,3 @@ jobs:
       && needs.check.outputs.skip-code != 'no-changes'
     with:
       snapshot: true
-
