@@ -15,4 +15,4 @@ jobs:
     with:
       debug: true
       java-version: 21
-      version-command: ./gradle version --quiet
+      version-command: ./gradlew version --quiet
