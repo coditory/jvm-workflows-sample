@@ -20,16 +20,17 @@ jobs:
   snapshot:
     uses: ./.github/workflows/release.yml
     needs: build
+    secrets: inherit
     if: |
       needs.build.result == 'success'
       && github.event_name == 'pull_request'
-    secrets: inherit
     with:
       snapshot: true
 
   release:
     uses: ./.github/workflows/release-auto.yml
     needs: build
+    secrets: inherit
     if: |
       needs.build.result == 'success'
       && github.event_name == 'push'
