@@ -1,4 +1,4 @@
-name: Release Auto
+name: Auto Release
 
 on:
   workflow_dispatch:
@@ -14,8 +14,8 @@ on:
         required: false
         default: false
   workflow_run:
-    workflows: [ "Build" ]
-    types: [ completed ]
+    workflows: ["Build"]
+    types: [completed]
     branches:
       - main
       - v*x.x
