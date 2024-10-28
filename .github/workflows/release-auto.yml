@@ -28,8 +28,8 @@ jobs:
     uses: coditory/workflows/.github/workflows/release-check.yml@v1
     secrets: inherit
     if: |
-      github.event_name != "workflow_run"
-      || !contains(github.event.workflow_run.head_commit.message, "[ci-skip-build]")
+      github.event_name != 'workflow_run'
+      || !contains(github.event.workflow_run.head_commit.message, '[ci-skip-build]')
     with:
       security-updates-only: ${{ inputs.security-updates-only || github.event_name == 'workflow_run' }}
       debug: true
