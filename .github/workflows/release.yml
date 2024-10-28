@@ -60,4 +60,4 @@ jobs:
       # release-command: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=%NEXT_VERSION%
       snapshot-command: echo "Simulating snapshot publication $NEXT_VERSION variable has $(echo "$GRADLE_PUBLISH_KEY" | wc -c) characters"
       # snapshot-command: ./gradlew publishToSonatype -Pversion=%NEXT_VERSION%
-      version-command: ./gradlew version --quiet
+      version-command: ./gradlew version --quiet --no-scan
