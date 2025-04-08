@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    val coroutinesVersion = "1.10.1"
+    val coroutinesVersion = "1.10.2"
     implementation("com.coditory.klog:klog:0.0.18")
     implementation("com.coditory.quark:quark-context:0.1.22")
 
